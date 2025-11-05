@@ -1,0 +1,4 @@
+GST,Max TemperatureC,Min TemperatureC,Mean TemperatureC,Max Humidity, Mean Humidity
+2024-01-01,30,15,22,80,70
+2024-01-02,32,12,25,85,75
+2024-01-03,29,10,20,78,65
