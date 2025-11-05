@@ -38,12 +38,12 @@ class Yearly_Report:
         data = {"max_temp": {"temp": 0, "date": ""}, "min_temp" : {"temp" : 10000, "date": ""}, "humidity": {"temp": 0, "date": ""}}
         for file in matching_files:
             try:
-                file_path = os.path.join(folder_path, file_name)
+                file_path = os.path.join(self.folder_path, file)
                 with open(file_path, 'r') as file_data:
                     headers = csv.DictReader(file_data)
                     for each_row in headers:
-                        if each_row["Max TemperatureC"] and each_row["Min TemperatureC"] and each_row["Max Humidity"]:
-                            if int(each_row["Max TemperatureC"]) >= data["max_temp"]["temp"]:
+                        if each_row["Max TemperatureC"] and each_row["Min TemperatureC"]:
+                            if int(each_row["Max TemperatureC"]) > data["max_temp"]["temp"]:
                                 data["max_temp"]["temp"] = int(each_row["Max TemperatureC"])
                                 data["max_temp"]["date"] = each_row["GST"]
 
@@ -205,50 +205,52 @@ class Combined_chart(Bar_chart):
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-e", "--yearly_max_temp", help="Will show the max temperature in that specific year YYYY")
-parser.add_argument("-a", "--average", help="Will show the average temaparature of the month YYYY/MM")
-parser.add_argument("-c", "--draw_chart", help="Will show the average temaparature of the month YYYY/MM")
-parser.add_argument("-c2", "--combined_chart", help="Will show the average temaparature of the month YYYY/MM")
-parser.add_argument("path", help="expects path in the argument after flag")
+if __name__ == "__main__":
+
+    parser.add_argument("-e", "--yearly_max_temp", help="Will show the max temperature in that specific year YYYY")
+    parser.add_argument("-a", "--average", help="Will show the average temaparature of the month YYYY/MM")
+    parser.add_argument("-c", "--draw_chart", help="Will show the average temaparature of the month YYYY/MM")
+    parser.add_argument("-c2", "--combined_chart", help="Will show the average temaparature of the month YYYY/MM")
+    parser.add_argument("path", help="expects path in the argument after flag")
 
 
-args = parser.parse_args()
+    args = parser.parse_args()
 
 
 
-# ----------------calling of respective function according to the flags------------------
+    # ----------------calling of respective function according to the flags------------------
 
-if args.average:
-    if "/" in args.average:
-        year, month = args.average.split("/")
-        monthly_report_instance = Monthly_report(args.path, year, month)
-        monthly_report_instance.Average_temp()
-    else:
-        print("You are supposed to give YYYY/MM in the argument")
+    if args.average:
+        if "/" in args.average:
+            year, month = args.average.split("/")
+            monthly_report_instance = Monthly_report(args.path, year, month)
+            monthly_report_instance.Average_temp()
+        else:
+            print("You are supposed to give YYYY/MM in the argument")
 
-if args.yearly_max_temp:
+    if args.yearly_max_temp:
 
-    if "/" in args.yearly_max_temp:
-        year, month = args.yearly_max_temp.split("/")
-        year_report = Yearly_Report(args.path, year)
-        year_report.yearly_max_temp()
-    else:
-        year = args.yearly_max_temp
-        year_report = Yearly_Report(args.path, year)
-        year_report.yearly_max_temp()
+        if "/" in args.yearly_max_temp:
+            year, month = args.yearly_max_temp.split("/")
+            year_report = Yearly_Report(args.path, year)
+            year_report.yearly_max_temp()
+        else:
+            year = args.yearly_max_temp
+            year_report = Yearly_Report(args.path, year)
+            year_report.yearly_max_temp()
 
-if args.draw_chart:
-    if "/" in args.draw_chart:
-        year, month = args.draw_chart.split("/")
-        bar_chart_instance = Bar_chart(args.path, year, month)
-        bar_chart_instance.draw_bar_chart(bar_chart_instance.printing_bar)
-    else:
-        print("You are supposed to give YYYY/MM in the argument")
+    if args.draw_chart:
+        if "/" in args.draw_chart:
+            year, month = args.draw_chart.split("/")
+            bar_chart_instance = Bar_chart(args.path, year, month)
+            bar_chart_instance.draw_bar_chart(bar_chart_instance.printing_bar)
+        else:
+            print("You are supposed to give YYYY/MM in the argument")
 
-if args.combined_chart:
-    if "/" in args.combined_chart:
-        year, month = args.combined_chart.split("/")
-        cobmbined_chart_instance = Combined_chart(args.path, year, month)
-        cobmbined_chart_instance.draw_combined_chart()
-    else:
-        print("You are supposed to give YYYY/MM in the argument")
+    if args.combined_chart:
+        if "/" in args.combined_chart:
+            year, month = args.combined_chart.split("/")
+            cobmbined_chart_instance = Combined_chart(args.path, year, month)
+            cobmbined_chart_instance.draw_combined_chart()
+        else:
+            print("You are supposed to give YYYY/MM in the argument")
