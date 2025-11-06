@@ -226,7 +226,7 @@ if __name__ == "__main__":
             monthly_report_instance = Monthly_report(args.path, year, month)
             monthly_report_instance.Average_temp()
         else:
-            print("You are supposed to give YYYY/MM in the argument")
+            print("You are suppose to give YYYY/MM in the argument")
 
     if args.yearly_max_temp:
 
@@ -245,7 +245,7 @@ if __name__ == "__main__":
             bar_chart_instance = Bar_chart(args.path, year, month)
             bar_chart_instance.draw_bar_chart(bar_chart_instance.printing_bar)
         else:
-            print("You are supposed to give YYYY/MM in the argument")
+            print("You are suppose to give YYYY/MM in the argument")
 
     if args.combined_chart:
         if "/" in args.combined_chart:
@@ -253,4 +253,4 @@ if __name__ == "__main__":
             cobmbined_chart_instance = Combined_chart(args.path, year, month)
             cobmbined_chart_instance.draw_combined_chart()
         else:
-            print("You are supposed to give YYYY/MM in the argument")
+            print("You are suppose to give YYYY/MM in the argument")
