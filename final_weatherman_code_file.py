@@ -2,9 +2,9 @@ import argparse
 import csv
 import os
 
-eng_months = {1:"Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"}
+ENG_MONTHS = {1:"Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"}
 
-class Yearly_Report:
+class YearlyReport:
     def __init__(self, path, year):
         """
         folder_path = The path of the folder files
@@ -22,7 +22,7 @@ class Yearly_Report:
         data = self.max_min_temp_max_humidity()
 
         print(f'Highest = {data["max_temp"]["temp"]}°C on {data["max_temp"]["date"]}\n Lowest = {data["min_temp"]["temp"]}°C on {data["min_temp"]["date"]}\n Humid = {data["humidity"]["temp"]}% on {data["min_temp"]["date"]}')
-
+        return 
 
     def max_min_temp_max_humidity(self):
         """
@@ -54,8 +54,8 @@ class Yearly_Report:
                             if int(each_row["Max Humidity"]) > data["humidity"]["temp"]:
                                 data["humidity"]["temp"] = int(each_row["Max Humidity"])
                                 data["humidity"]["date"] = each_row["GST"]
-            except Exception as a:
-                pass
+            except Exception as error:
+                print(error)
 
         return data
 
@@ -63,7 +63,7 @@ class Yearly_Report:
 #-----------class to find monthly report--------------
 
 
-class Monthly_report:
+class MonthlyReport:
 
     def __init__(self, path, year, month):
         """
@@ -85,7 +85,7 @@ class Monthly_report:
         matching_file = None
         
         for file_name in all_files:
-            if f"{year}_{eng_months[int(month)]}" in file_name:
+            if f"{year}_{ENG_MONTHS[int(month)]}" in file_name:
                 matching_file = file_name
         return matching_file
 
@@ -113,7 +113,7 @@ class Monthly_report:
             return None
 
 
-    def Average_temp(self):
+    def average_temp(self):
 
         """
         file_path = gives the path of the respective folder
@@ -134,7 +134,7 @@ class Monthly_report:
 
 # ------------- draw bar chart of a single day ----------
 
-class Bar_chart(Monthly_report):
+class BarChart(MonthlyReport):
     def __init__(self, path, year, month):
         """
         file_path = gives the path of the respective folder
@@ -175,7 +175,7 @@ class Bar_chart(Monthly_report):
 
 #-----------------combined chart-----------------------
 
-class Combined_chart(Bar_chart):
+class CombinedChart(BarChart):
     def __init__(self, path, year, month):
         """
         file_path = gives the path of the respective folder
@@ -223,8 +223,8 @@ if __name__ == "__main__":
     if args.average:
         if "/" in args.average:
             year, month = args.average.split("/")
-            monthly_report_instance = Monthly_report(args.path, year, month)
-            monthly_report_instance.Average_temp()
+            monthly_report_instance = MonthlyReport(args.path, year, month)
+            monthly_report_instance.average_temp()
         else:
             print("You are suppose to give YYYY/MM in the argument")
 
@@ -232,17 +232,17 @@ if __name__ == "__main__":
 
         if "/" in args.yearly_max_temp:
             year, month = args.yearly_max_temp.split("/")
-            year_report = Yearly_Report(args.path, year)
+            year_report = YearlyReport(args.path, year)
             year_report.yearly_max_temp()
         else:
             year = args.yearly_max_temp
-            year_report = Yearly_Report(args.path, year)
+            year_report = YearlyReport(args.path, year)
             year_report.yearly_max_temp()
 
     if args.draw_chart:
         if "/" in args.draw_chart:
             year, month = args.draw_chart.split("/")
-            bar_chart_instance = Bar_chart(args.path, year, month)
+            bar_chart_instance = BarChart(args.path, year, month)
             bar_chart_instance.draw_bar_chart(bar_chart_instance.printing_bar)
         else:
             print("You are suppose to give YYYY/MM in the argument")
@@ -250,7 +250,7 @@ if __name__ == "__main__":
     if args.combined_chart:
         if "/" in args.combined_chart:
             year, month = args.combined_chart.split("/")
-            cobmbined_chart_instance = Combined_chart(args.path, year, month)
+            cobmbined_chart_instance = CombinedChart(args.path, year, month)
             cobmbined_chart_instance.draw_combined_chart()
         else:
             print("You are suppose to give YYYY/MM in the argument")
